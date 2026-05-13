@@ -19,15 +19,28 @@ public class Main {
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
         char quitAnswer;        // stores if user wants to quit program 
+        int boardSize;          // stores board size user wants
 
         do { // while (quitAnswer != 'Q')
 
             /***********************************************************
+             * GET BOARD SIZE
+             **********************************************************/
+            System.out.print("\nWhat is your board size: ");
+            boardSize = input.nextInt();
+            
+            Solution solvedBoard = new Solution(boardSize);
+
+            // PRINT BOARD
+            solvedBoard.printBoard();
+
+            /***********************************************************
              * CHECK IF WE RUN AGAIN - converts input to uppercase
              **********************************************************/
-            System.out.print("Do you want to input another board? (N to quit): ");
+            System.out.print("\nDo you want to input another board? (N to quit): ");
             quitAnswer = input.next().charAt(0);
             quitAnswer = Character.toUpperCase(quitAnswer);
+            
         } while (quitAnswer != 'N');
 
     } // END void main()
