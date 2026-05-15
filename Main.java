@@ -30,9 +30,22 @@ public class Main {
             boardSize = input.nextInt();
             
             Solution solvedBoard = new Solution(boardSize);
-
-            // PRINT BOARD
-            solvedBoard.printBoard();
+            
+            /***********************************************************
+             * SOLVE THE QUEENS PROBLEM AND OUTPUT THE SOLUTION
+             **********************************************************/
+            if (solvedBoard.solve()) {
+                System.out.println("The solution is: ");
+                
+                // print board
+                solvedBoard.printBoard();
+            } // if (solvedBoard.solve())
+            /***********************************************************
+             * NOT SOLVEABLE 
+             **********************************************************/
+            else {
+                System.out.println("There is no solution.");
+            } // END else
 
             /***********************************************************
              * CHECK IF WE RUN AGAIN - converts input to uppercase

@@ -4,14 +4,9 @@
  * This file contains the function to solve the queens code. A board is
  * passed to the function with preset dimensions. 
  * 
- * Each space on the board will contain the following values (node):
- *  1. spaceValue (defined below)
- *  2. Has a queen (true or false)
- * 
- * The spaceValue will be as followed:
+ * Each space on the board will contain the following values:
  *      0 = free space
- *      1 = space a queen can move to (another queen cant be there)
- *      +2 = invalid space (two or more queens can move there, invalid)
+ *      1 = has a queen
  * 
  * The number of queens on the board represent what row we are on
  * ---------------------------------------------------------------------
@@ -57,47 +52,56 @@
  *      b. Return: false 
  **********************************************************************/
 public class Solution {
-    /*******************************************************************
-     * NODE - board values
-     ******************************************************************/
-    private static class Node {
-        int spaceValue;     // 0 = free | 1 = queen moves there | +2 = invalid
-        boolean hasQueen;   // if has queen (true) or space is free (false)
-
-        /***************************************************************
-         * NODE() - CONSTRUCTOR
-         **************************************************************/
-        Node () {
-            this.spaceValue = 0;
-            this.hasQueen = false;
-        } // END Node Constructor
-    } // END class Node
-
-    private Node[][] board;
+    private boolean[][] board;
     private final int SIZE;
 
     /*******************************************************************
      * Solution - Constructor
+     *  create a board intalized to 0
      ******************************************************************/
     Solution (int inSize) {
         this.SIZE = inSize;
-        this.board = new Node[inSize][inSize];
+        this.board = new boolean[inSize][inSize];
         
         // INTALIZE BOARD
         for (int row = 0; row < SIZE; row++) {
             for (int col = 0; col < SIZE; col++) {
-                board[row][col] = new Node();
+                board[row][col] = 0;
             } // END for col
         } // END for row
 
     } // END Solution Constructor
 
     /*******************************************************************
+     * solve ()
+     * -----------------------------------------------------------------
+     * Main funciton that will be called in main. It solves the queens
+     * problem. We will place each queen row by row
+     * -----------------------------------------------------------------
+     * INPUT
+     *  numOfQueens = number of queens on the board / the current row
+     *                we are on
      * 
+     * OUTPUT
+     *  true (solution) or false (cannot solve)
      ******************************************************************/
-    public boolean solve (int[][] board, int numOfQueens) {
-
-        System.out.println("No solution.");
+    public boolean solve (int numOfQueens) {
+        /***************************************************************
+         * CHECK IF SOLVED / CANNOT ADD ANYMORE QUEENS
+         **************************************************************/
+        if (numOfQueens == SIZE) {
+            return true;
+        } // END if
+        /***************************************************************
+         * STILL NEED TO SOLVE / NEED TO ADD MORE QUEENS
+         **************************************************************/
+        else {
+            for (int row = 0; row < SIZE; row++) {
+                
+            } // END for row
+        } // END else
+        
+        // CANNOT SOLVE
         return false;
     } // END boolean solve
 
@@ -112,11 +116,11 @@ public class Solution {
                 // Starting bracket
                 System.out.print("[ ");
 
-                // if spot has queen print a Q
-                if (board[row][col].hasQueen) {
+                // if spot has queen print a "Q"
+                if (board[row][col] == 1) {
                     System.out.print("Q");
                 }
-                // no queen
+                // no queen print "."
                 else {
                     System.out.print(".");
                 }
@@ -133,16 +137,50 @@ public class Solution {
     /*******************************************************************
      * isValidMove()
      * -----------------------------------------------------------------
-     * This function checks if a move is valid. It looks at the column
-     * and row the 
+     * This function checks if a move is valid. The function receives
+     * the column the queen is currently located at and checks the space
+     * value of the nearby spaces it can go to:
+     *  1. The entire column
+     *  2. Upper left diagonal
+     *  3. Upper right diagonal
+     * 
+     * If it encounters a 1 / another queen it will return false
+     * 
+     * NOTE:
+     *  - not checking row because in the solution function we are placing
+     *    each queen in different rows. No two queens will be in same
+     *    row
+     *  - not checking lower diagonals because going in order from top
+     *    to bottom, there will be nothing to check at the bottom of the
+     *    new queen
      * -----------------------------------------------------------------
      * INPUT
-     *  column
+     *  positionColumn = current column queen is located at
      * 
      * OUTPUT
-     *  
+     *  true (can move queen there)
+     *  false (cannot move there)
      ******************************************************************/
-    // private boolean isValidMove (int column) {
+    private boolean isValidMove (int positionColumn) {
 
-    // } // END boolean isValidMove
+        /***************************************************************
+         * CHECK ENTIRE COLUMN
+         **************************************************************/
+        for (int col = 0; col < SIZE; col++) {
+            if (board[row][positionColumn] >= 1) {
+                return false;
+            } // END if
+        } // END for row
+
+        /***************************************************************
+         * CHECK UPPER LEFT DIAGONAL
+         * -------------------------------------------------------------
+         * dont need to check lower
+         **************************************************************/
+        for (int currRow = position)
+
+        // PASSED ALL CHECKS, MOVE IS VALID
+        return true;
+    } // END boolean isValidMove
+
 } // END class Solution
