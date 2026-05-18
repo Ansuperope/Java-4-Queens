@@ -5,8 +5,8 @@
  * passed to the function with preset dimensions. 
  * 
  * Each space on the board will contain the following values:
- *      0 = free space
- *      1 = has a queen
+ *      false = free space
+ *      true = has a queen
  * 
  * The number of queens on the board represent what row we are on
  * ---------------------------------------------------------------------
@@ -53,20 +53,20 @@
  **********************************************************************/
 public class Solution {
     private boolean[][] board;
-    private final int SIZE;
+    private int size;
 
     /*******************************************************************
      * Solution - Constructor
-     *  create a board intalized to 0
+     *  create a board intalized to false / no queen
      ******************************************************************/
     Solution (int inSize) {
-        this.SIZE = inSize;
+        this.size = inSize;
         this.board = new boolean[inSize][inSize];
         
         // INTALIZE BOARD
-        for (int row = 0; row < SIZE; row++) {
-            for (int col = 0; col < SIZE; col++) {
-                board[row][col] = 0;
+        for (int row = 0; row < size; row++) {
+            for (int col = 0; col < size; col++) {
+                board[row][col] = false;
             } // END for col
         } // END for row
 
@@ -89,16 +89,33 @@ public class Solution {
         /***************************************************************
          * CHECK IF SOLVED / CANNOT ADD ANYMORE QUEENS
          **************************************************************/
-        if (numOfQueens == SIZE) {
+        if (numOfQueens == size) {
             return true;
         } // END if
         /***************************************************************
          * STILL NEED TO SOLVE / NEED TO ADD MORE QUEENS
          **************************************************************/
         else {
-            for (int row = 0; row < SIZE; row++) {
-                
-            } // END for row
+            /***********************************************************
+             * Check every column in a row
+            ***********************************************************/
+            for (int col = 0; col < size; col++) {
+                /*******************************************************
+                 * Check Move
+                *******************************************************/
+                if (isValidMove(numOfQueens, col)) {
+                    // Place Queen
+                    board[numOfQueens][col] = true;
+
+                    // Recursive
+                    if (solve(numOfQueens + 1)) {
+                        return true;
+                    } // END if
+
+                    // Backtrack if invalid
+                    board[numOfQueens][col] = false;
+                } // END if (isValidMove(numOfQueens, col))
+            } // END for col
         } // END else
         
         // CANNOT SOLVE
@@ -108,16 +125,16 @@ public class Solution {
     /*******************************************************************
      * printBoard()
      * -----------------------------------------------------------------
-     * Prints board of 
+     * Prints board
      ******************************************************************/
     public void printBoard () {
-        for (int col = 0; col < SIZE; col++) {
-            for (int row = 0; row < SIZE; row++) {
+        for (int row = 0; row < size; row++) {
+            for (int col = 0; col < size; col++) {
                 // Starting bracket
                 System.out.print("[ ");
 
                 // if spot has queen print a "Q"
-                if (board[row][col] == 1) {
+                if (board[row][col]) {
                     System.out.print("Q");
                 }
                 // no queen print "."
@@ -155,29 +172,53 @@ public class Solution {
      *    new queen
      * -----------------------------------------------------------------
      * INPUT
-     *  positionColumn = current column queen is located at
+     *  currRow = current row queen is located at
+     *  currCol = current column queen is located at
      * 
      * OUTPUT
      *  true (can move queen there)
      *  false (cannot move there)
      ******************************************************************/
-    private boolean isValidMove (int positionColumn) {
+    private boolean isValidMove (int currRow, int currCol) {
 
         /***************************************************************
          * CHECK ENTIRE COLUMN
          **************************************************************/
-        for (int col = 0; col < SIZE; col++) {
-            if (board[row][positionColumn] >= 1) {
+        for (int row = 0; row < currRow; row++) {
+            if (board[row][currCol]) {
                 return false;
             } // END if
         } // END for row
 
         /***************************************************************
          * CHECK UPPER LEFT DIAGONAL
-         * -------------------------------------------------------------
-         * dont need to check lower
          **************************************************************/
-        for (int currRow = position)
+        int row = currRow - 1;
+        int col = currCol - 1;
+
+        while (row >= 0 && col >= 0) {
+            if (board[row][col]) {
+                return false;
+            } // END if
+
+            row--;
+            col--;
+        } // END while (row >= 0 && col >= 0)
+
+        /***************************************************************
+         * CHECK UPPER RIGHT DIAGONAL
+         **************************************************************/
+        row = currRow - 1;
+        col = currCol + 1;
+
+        while (row >= 0 && col < size) {
+            if (board[row][col]) {
+                return false;
+            } // END if
+
+            row--;
+            col++;
+        } // END while (row >= 0 && col >= 0)
 
         // PASSED ALL CHECKS, MOVE IS VALID
         return true;

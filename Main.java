@@ -34,7 +34,7 @@ public class Main {
             /***********************************************************
              * SOLVE THE QUEENS PROBLEM AND OUTPUT THE SOLUTION
              **********************************************************/
-            if (solvedBoard.solve()) {
+            if (solvedBoard.solve(0)) {
                 System.out.println("The solution is: ");
                 
                 // print board
